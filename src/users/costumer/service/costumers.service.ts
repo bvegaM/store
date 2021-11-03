@@ -25,13 +25,13 @@ export class CostumersService {
     return this.costumers;
   }
 
-  findOne(id: number) {
+  findOne(id: number): Costumer {
     const costumer = this.costumers.find((costumer) => costumer.id === id);
     if (!costumer) {
-      return {
+      throw new NotFoundException({
         status: HttpStatus.NOT_FOUND,
         message: `Cliente ${id} no encontrado`,
-      };
+      });
     }
     return costumer;
   }
@@ -58,37 +58,26 @@ export class CostumersService {
 
   update(id: number, payload: UpdateCostumerDto) {
     const costumer = this.findOne(id);
-    if (!costumer) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: `Cliente ${id} no encontrado`,
-      };
-    }
     const index = this.costumers.findIndex((costumer) => costumer.id === id);
-    const newCostumer = {
+    this.costumers[index] = {
       ...costumer,
       ...payload,
     };
     return {
       status: HttpStatus.OK,
       message: `Cliente ${id} actualizado exitosamente`,
-      body: newCostumer,
+      body: this.costumers[index],
     };
   }
 
-  delete(id: number) {
+  remove(id: number) {
     const costumer = this.findOne(id);
-    if (!costumer) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: `Cliente ${id} no encontrado`,
-      };
-    }
     const index = this.costumers.findIndex((costumer) => costumer.id === id);
     this.costumers.splice(index, 1);
     return {
       status: HttpStatus.OK,
       message: `Cliente ${id} eliminado exitosamente`,
+      body: costumer,
     };
   }
 }

@@ -54,12 +54,6 @@ export class CategoriesService {
 
   update(id: number, payload: UpdateCategoryDto) {
     const category = this.findOne(id);
-    if (!category) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: `Categoría ${id} no encontrada`,
-      };
-    }
     const index = this.categories.findIndex((category) => category.id === id);
     this.categories[index] = {
       ...category,
@@ -73,17 +67,13 @@ export class CategoriesService {
   }
 
   remove(id: number) {
+    const category = this.findOne(id);
     const index = this.categories.findIndex((category) => category.id === id);
-    if (index === -1) {
-      throw new NotFoundException({
-        status: HttpStatus.NOT_FOUND,
-        message: `No se ha encontrado la categoría ${id}`,
-      });
-    }
     this.categories.splice(index, 1);
     return {
-      status: HttpStatus.NOT_FOUND,
+      status: HttpStatus.OK,
       message: `Categoría ${id} eliminada exitosamente`,
+      body: category,
     };
   }
 }

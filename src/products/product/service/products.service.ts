@@ -58,12 +58,6 @@ export class ProductsService {
 
   update(id: number, payload: UpdateProductDto) {
     const product = this.findOne(id);
-    if (!product) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: `Producto ${id} no encontrado`,
-      };
-    }
     const index = this.products.findIndex((product) => product.id === id);
     this.products[index] = {
       ...product,
@@ -76,19 +70,14 @@ export class ProductsService {
     };
   }
 
-  delete(id: number) {
+  remove(id: number) {
     const product = this.findOne(id);
-    if (!product) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: `Producto ${id} no encontrado`,
-      };
-    }
     const index = this.products.findIndex((product) => product.id === id);
     this.products.splice(index, 1);
     return {
       status: HttpStatus.OK,
       message: `producto eliminado exitosamente`,
+      body: product,
     };
   }
 }

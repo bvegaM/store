@@ -55,12 +55,6 @@ export class UsersService {
 
   update(id: number, payload: UpdateUserDto) {
     const user = this.findOne(id);
-    if (!user) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: `Usuario ${id} no encontrado`,
-      };
-    }
     const index = this.users.findIndex((user) => user.id === id);
     this.users[index] = {
       ...user,
@@ -74,17 +68,13 @@ export class UsersService {
   }
 
   remove(id: number) {
+    const user = this.findOne(id);
     const index = this.users.findIndex((user) => user.id === id);
-    if (index === -1) {
-      throw new NotFoundException({
-        status: HttpStatus.NOT_FOUND,
-        message: `No se ha encontrado el usuario ${id}`,
-      });
-    }
     this.users.splice(index, 1);
     return {
-      status: HttpStatus.NOT_FOUND,
-      message: `Usuario ${id} eliminado exitosamente`,
+      status: HttpStatus.OK,
+      message: `usuario ${id} eliminado exitosamente`,
+      body: user,
     };
   }
 }

@@ -43,6 +43,6 @@ export class CostumersController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   delete(@Param() id: number) {
-    return this.costumersService.delete(id);
+    return this.costumersService.remove(id);
   }
 }

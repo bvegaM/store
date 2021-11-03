@@ -48,6 +48,6 @@ export class ProductsController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   delete(@Param('id', ParseIntPipe) id: number) {
-    return this.productService.delete(id);
+    return this.productService.remove(id);
   }
 }

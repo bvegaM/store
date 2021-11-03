@@ -57,12 +57,6 @@ export class BrandsService {
 
   update(id: number, payload: UpdateBrandDto) {
     const brand = this.findOne(id);
-    if (!brand) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: `Marca ${id} no encontrada`,
-      };
-    }
     const index = this.brands.findIndex((brand) => brand.id === id);
     this.brands[index] = {
       ...brand,
@@ -76,17 +70,13 @@ export class BrandsService {
   }
 
   remove(id: number) {
+    const brand = this.findOne(id);
     const index = this.brands.findIndex((brand) => brand.id === id);
-    if (index == -1) {
-      throw new NotFoundException({
-        status: HttpStatus.NOT_FOUND,
-        message: `No se ha encontrado la marca ${id}`,
-      });
-    }
     this.brands.splice(index, 1);
     return {
-      status: HttpStatus.NOT_FOUND,
+      status: HttpStatus.OK,
       message: `Marca ${id} eliminada exitosamente`,
+      body: brand,
     };
   }
 }
